@@ -1,8 +1,8 @@
 package com.halcyon.javatests.movies.service;
 
-import com.halcyon.javatests.movies.data.*;
-import com.halcyon.javatests.movies.model.*;
-
+import com.halcyon.javatests.movies.data.MovieRepository;
+import com.halcyon.javatests.movies.model.Genre;
+import com.halcyon.javatests.movies.model.Movie;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +21,7 @@ public class MovieServiceShould {
 
     @Before
     public void setUp() throws Exception {
+
         MovieRepository movieRepository = Mockito.mock(MovieRepository.class);
 
         Mockito.when(movieRepository.findAll()).thenReturn(
@@ -42,19 +43,17 @@ public class MovieServiceShould {
     public void return_movies_by_genre() {
 
         Collection<Movie> movies = movieService.findMoviesByGenre(Genre.COMEDY);
-
-        assertThat(getMovieIds(movies), CoreMatchers.is(Arrays.asList(3, 6)));
-    }
-
-    private List<Integer> getMovieIds(Collection<Movie> movies) {
-        return movies.stream().map(Movie::getId).collect(Collectors.toList());
+        assertThat(getMovieIds(movies), CoreMatchers.is(Arrays.asList(3, 6)) );
     }
 
     @Test
     public void return_movies_by_length() {
 
         Collection<Movie> movies = movieService.findMoviesByLength(119);
+        assertThat(getMovieIds(movies), CoreMatchers.is(Arrays.asList(2, 3, 4, 5, 6)) );
+    }
 
-        assertThat(getMovieIds(movies), CoreMatchers.is(Arrays.asList(2, 3, 4, 5, 6)));
+    private List<Integer> getMovieIds(Collection<Movie> movies) {
+        return movies.stream().map(Movie::getId).collect(Collectors.toList());
     }
 }
